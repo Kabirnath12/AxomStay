@@ -1,0 +1,217 @@
+{
+  "users": [
+    {
+      "id": "a3fdb8e2-0114-45e7-a53f-6f7f138d6cf8",
+      "name": "Test Guest",
+      "email": "guest-1787499683012@example.com",
+      "passwordHash": "$2a$12$eDfahASXWLyxHbyZYMqceOV7yMdqMe.nboKneCgdE0uQBhy913lYW",
+      "role": "guest",
+      "createdAt": "2026-08-23T15:41:24.183Z"
+    },
+    {
+      "id": "9c3330d6-b3c2-4912-88b2-3b05259239bb",
+      "name": "Kabir Nath",
+      "email": "kabirshreenath@gmail.com",
+      "passwordHash": "$2a$12$6CsRCunBbEh7jUvU4JJtfuyU.NeCAB5kgJOdtZ2/Qw.kG5bJ9dt0q",
+      "role": "guest",
+      "createdAt": "2026-08-23T15:42:09.930Z"
+    },
+    {
+      "id": "47b9bb02-2d13-4e4c-8291-1e426f2cb0da",
+      "name": "Dual Account",
+      "email": "dual-1787500068273@example.com",
+      "passwordHash": "$2a$12$CdC3T9Ww83AGgnY.wVKEwOB2OaXHQE1X3Xh/XF5ZYtV.Ow9AhFUdO",
+      "role": "guest",
+      "roles": [
+        "guest",
+        "host"
+      ],
+      "createdAt": "2026-08-23T15:47:48.919Z"
+    },
+    {
+      "id": "1d79bda9-e9d6-4e3d-8fd5-970c804d4944",
+      "name": "Recovery Test",
+      "email": "recovery-1787500297804@example.com",
+      "passwordHash": "$2a$12$6za/P8g7yRKJoMv5A91I8.hIRNvWvfDdV0t.Tky0ru9hkczvkDROa",
+      "role": "guest",
+      "roles": [
+        "guest"
+      ],
+      "createdAt": "2026-08-23T15:51:38.455Z"
+    },
+    {
+      "id": "07e63e3b-c8e7-4105-a5c0-f358f8507463",
+      "name": "OTP Test",
+      "email": "917500299678@phone.axomstay.local",
+      "phone": "917500299678",
+      "role": "guest",
+      "roles": [
+        "guest"
+      ],
+      "passwordHash": "",
+      "createdAt": "2026-08-23T15:51:39.681Z"
+    },
+    {
+      "id": "3cae8d87-3384-4e0d-bcc1-a07c8986f5a7",
+      "name": "Twilio Test",
+      "email": "917500411183@phone.axomstay.local",
+      "phone": "917500411183",
+      "role": "guest",
+      "roles": [
+        "guest"
+      ],
+      "passwordHash": "",
+      "createdAt": "2026-08-23T15:53:31.216Z",
+      "otpCode": "143150",
+      "otpExpiresAt": 1787500711217
+    }
+  ],
+  "properties": [
+    {
+      "id": "demo-garden",
+      "hostId": "demo-host",
+      "title": "Garden View Room",
+      "location": "Silpukhuri, Guwahati",
+      "area": "Silpukhuri",
+      "description": "A calm room with morning light and a leafy garden view.",
+      "price": 2400,
+      "guests": 2,
+      "image": "images/garden-view-room.jpg",
+      "status": "published"
+    },
+    {
+      "id": "demo-courtyard",
+      "hostId": "demo-host",
+      "title": "The Courtyard Suite",
+      "location": "Silpukhuri, Guwahati",
+      "area": "Silpukhuri",
+      "description": "A spacious suite made for slow afternoons and shared meals.",
+      "price": 3100,
+      "guests": 3,
+      "image": "images/courtyard-suite.jpg",
+      "status": "published"
+    },
+    {
+      "id": "demo-family",
+      "hostId": "demo-host",
+      "title": "The Family Nook",
+      "location": "Silpukhuri, Guwahati",
+      "area": "Silpukhuri",
+      "description": "A comfortable family room for a relaxed Assam getaway.",
+      "price": 3800,
+      "guests": 4,
+      "image": "images/family-nook.jpg",
+      "status": "published"
+    },
+    {
+      "id": "demo-uzanbazar",
+      "hostId": "demo-host",
+      "title": "Brahmaputra Balcony Stay",
+      "location": "Uzanbazar, Guwahati",
+      "area": "Uzanbazar",
+      "description": "A breezy city stay close to the river and old Guwahati.",
+      "price": 2800,
+      "guests": 2,
+      "image": "images/uzanbazar-room.jpg",
+      "status": "published"
+    },
+    {
+      "id": "demo-beltola",
+      "hostId": "demo-host",
+      "title": "Beltola Green House",
+      "location": "Beltola, Guwahati",
+      "area": "Beltola",
+      "description": "A leafy, peaceful base for longer Guwahati visits.",
+      "price": 2600,
+      "guests": 3,
+      "image": "images/beltola-green-house.jpg",
+      "status": "published"
+    },
+    {
+      "id": "demo-zoo-road",
+      "hostId": "demo-host",
+      "title": "Zoo Road Garden Suite",
+      "location": "Zoo Road, Guwahati",
+      "area": "Zoo Road",
+      "description": "Comfortable rooms near the city's favourite green spaces.",
+      "price": 3000,
+      "guests": 3,
+      "image": "images/zoo-road-suite.jpg",
+      "status": "published"
+    },
+    {
+      "id": "demo-chandmari",
+      "hostId": "demo-host",
+      "title": "Chandmari Artist Home",
+      "location": "Chandmari, Guwahati",
+      "area": "Chandmari",
+      "description": "A characterful homestay in one of Guwahati's lived-in neighbourhoods.",
+      "price": 2200,
+      "guests": 2,
+      "image": "images/chandmari-home.jpg",
+      "status": "published"
+    },
+    {
+      "id": "demo-disipur",
+      "hostId": "demo-host",
+      "title": "Dispur Family Retreat",
+      "location": "Dispur, Guwahati",
+      "area": "Dispur",
+      "description": "A spacious home base for families exploring Assam.",
+      "price": 3500,
+      "guests": 5,
+      "image": "images/dispur-retreat.jpg",
+      "status": "published"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "04d07987-7412-4e91-8b90-2c07bf73d6dc",
+      "userId": "a3fdb8e2-0114-45e7-a53f-6f7f138d6cf8",
+      "hostId": "demo-host",
+      "propertyId": "demo-garden",
+      "propertyTitle": "Garden View Room",
+      "checkIn": "2026-09-10",
+      "checkOut": "2026-09-12",
+      "guests": 2,
+      "nights": 2,
+      "total": 4800,
+      "status": "paid",
+      "createdAt": "2026-08-23T15:41:24.207Z",
+      "paidAt": "2026-08-23T15:41:24.219Z"
+    },
+    {
+      "id": "a5cd73e6-1bdf-43fc-90dd-36c0b75bf91d",
+      "userId": "9c3330d6-b3c2-4912-88b2-3b05259239bb",
+      "hostId": "demo-host",
+      "propertyId": "demo-beltola",
+      "propertyTitle": "Beltola Green House",
+      "checkIn": "2026-08-25",
+      "checkOut": "2026-08-28",
+      "guests": 2,
+      "nights": 3,
+      "total": 7800,
+      "status": "paid",
+      "createdAt": "2026-08-23T15:48:42.033Z",
+      "paidAt": "2026-08-23T15:48:42.044Z"
+    }
+  ],
+  "payments": [
+    {
+      "id": "884d9124-81d5-4b3f-bc0c-1d805c6e85eb",
+      "bookingId": "04d07987-7412-4e91-8b90-2c07bf73d6dc",
+      "amount": 4800,
+      "mode": "demo",
+      "status": "paid",
+      "createdAt": "2026-08-23T15:41:24.219Z"
+    },
+    {
+      "id": "b945824c-5a7d-48f6-8d07-34f32409951d",
+      "bookingId": "a5cd73e6-1bdf-43fc-90dd-36c0b75bf91d",
+      "amount": 7800,
+      "mode": "demo",
+      "status": "paid",
+      "createdAt": "2026-08-23T15:48:42.045Z"
+    }
+  ]
+}
