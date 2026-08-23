@@ -9,14 +9,16 @@ const { google } = require('google-auth-library');
 const twilio = require('twilio');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const Razorpay = require('razorpay');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'axomstay-local-development-secret';
 const dataPath = path.join(__dirname, 'data', 'store.json');
 const uploadsPath = path.join(__dirname, 'uploads');
-const stripeSecret = process.env.STRIPE_SECRET_KEY;
-const stripe = stripeSecret ? require('stripe')(stripeSecret) : null;
+const razorpayKeyId = process.env.RAZORPAY_KEY_ID;
+const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET;
+const razorpay = razorpayKeyId && razorpayKeySecret ? new Razorpay({ key_id: razorpayKeyId, key_secret: razorpayKeySecret }) : null;
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 const googleRedirectUri = process.env.GOOGLE_REDIRECT_URI || `http://localhost:${PORT}/api/auth/google/callback`;
@@ -241,17 +243,35 @@ app.post('/api/payments/checkout', auth('guest'), async (req, res) => {
   const booking = store.bookings.find((item) => item.id === req.body.bookingId && item.userId === req.auth.id);
   if (!booking) return res.status(404).json({ error: 'Booking not found.' });
   const paymentMethod = ['card', 'upi', 'netbanking', 'wallet'].includes(req.body.paymentMethod) ? req.body.paymentMethod : 'card';
-  if (stripe) {
-    if (!['card', 'upi'].includes(paymentMethod)) return res.status(400).json({ error: 'This payment method is not enabled for live checkout yet. Choose card or UPI.' });
-    const session = await stripe.checkout.sessions.create({ mode: 'payment', payment_method_types: [paymentMethod], line_items: [{ price_data: { currency: 'inr', product_data: { name: booking.propertyTitle }, unit_amount: booking.total * 100 }, quantity: 1 }], success_url: `${req.protocol}://${req.get('host')}/?payment=success&booking=${booking.id}`, cancel_url: `${req.protocol}://${req.get('host')}/?payment=cancelled` });
-    return res.json({ mode: 'stripe', url: session.url });
+  if (razorpay) {
+    const order = await razorpay.orders.create({ amount: booking.total * 100, currency: 'INR', receipt: booking.id, notes: { bookingId: booking.id, paymentMethod } });
+    booking.paymentMethod = paymentMethod;
+    booking.razorpayOrderId = order.id;
+    writeStore(store);
+    return res.json({ mode: 'razorpay', keyId: razorpayKeyId, orderId: order.id, amount: order.amount, currency: order.currency, bookingId: booking.id });
   }
   booking.status = 'paid';
   booking.paidAt = new Date().toISOString();
   booking.paymentMethod = paymentMethod;
   store.payments.push({ id: crypto.randomUUID(), bookingId: booking.id, amount: booking.total, method: paymentMethod, mode: 'demo', status: 'paid', createdAt: new Date().toISOString() });
   writeStore(store);
-  res.json({ mode: 'demo', booking, message: `Demo ${paymentMethod} payment successful. Add STRIPE_SECRET_KEY for live payments.` });
+  res.json({ mode: 'demo', booking, message: `Demo ${paymentMethod} payment successful. Add RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET for live payments.` });
+});
+
+app.post('/api/payments/verify', auth('guest'), (req, res) => {
+  if (!razorpay) return res.status(503).json({ error: 'Razorpay is not configured.' });
+  const { bookingId, razorpayOrderId, razorpayPaymentId, razorpaySignature } = req.body;
+  const store = readStore();
+  const booking = store.bookings.find((item) => item.id === bookingId && item.userId === req.auth.id);
+  if (!booking || booking.razorpayOrderId !== razorpayOrderId) return res.status(404).json({ error: 'Booking or Razorpay order not found.' });
+  const expectedSignature = crypto.createHmac('sha256', razorpayKeySecret).update(`${razorpayOrderId}|${razorpayPaymentId}`).digest('hex');
+  if (expectedSignature !== razorpaySignature) return res.status(400).json({ error: 'Payment signature could not be verified.' });
+  booking.status = 'paid';
+  booking.razorpayPaymentId = razorpayPaymentId;
+  booking.paidAt = new Date().toISOString();
+  store.payments.push({ id: crypto.randomUUID(), bookingId, amount: booking.total, method: booking.paymentMethod || 'card', provider: 'razorpay', status: 'paid', createdAt: new Date().toISOString() });
+  writeStore(store);
+  res.json({ booking, message: 'Payment successful and booking confirmed.' });
 });
 
 app.listen(PORT, () => console.log(`AxomStay is running at http://localhost:${PORT}`));
