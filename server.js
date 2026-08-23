@@ -151,7 +151,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
 
 app.post('/api/auth/otp/request', async (req, res) => {
   const phone = String(req.body.phone || '').replace(/\D/g, '');
-  if (phone.length < 10) return res.status(400).json({ error: 'Enter a valid mobile number.' });
+  if (!/^91[6-9]\d{9}$/.test(phone)) return res.status(400).json({ error: 'Enter a valid Indian mobile number, for example +91 9876543210.' });
   if (twilioConfigError) return res.status(503).json({ error: 'Twilio is configured incorrectly. TWILIO_ACCOUNT_SID must start with AC and be copied from the Twilio Console.' });
   const store = readStore();
   let user = store.users.find((item) => item.phone === phone);
@@ -168,8 +168,9 @@ app.post('/api/auth/otp/request', async (req, res) => {
       if (twilioMessagingServiceSid) message.messagingServiceSid = twilioMessagingServiceSid;
       else message.from = twilioFromNumber;
       await twilioClient.messages.create(message);
-    } catch {
-      return res.status(502).json({ error: 'Twilio could not deliver the OTP. Check your number and Twilio configuration.' });
+    } catch (error) {
+      console.error('Twilio OTP delivery failed', { code: error.code, status: error.status, message: error.message });
+      return res.status(502).json({ error: `Twilio could not deliver the OTP${error.code ? ` (${error.code})` : ''}. ${error.message || 'Check your number and Twilio configuration.'}` });
     }
   }
   writeStore(store);
