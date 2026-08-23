@@ -9,16 +9,16 @@ const { google } = require('google-auth-library');
 const twilio = require('twilio');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const Razorpay = require('razorpay');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'axomstay-local-development-secret';
 const dataPath = path.join(__dirname, 'data', 'store.json');
 const uploadsPath = path.join(__dirname, 'uploads');
-const razorpayKeyId = process.env.RAZORPAY_KEY_ID;
-const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET;
-const razorpay = razorpayKeyId && razorpayKeySecret ? new Razorpay({ key_id: razorpayKeyId, key_secret: razorpayKeySecret }) : null;
+const cashfreeAppId = process.env.CASHFREE_APP_ID;
+const cashfreeSecretKey = process.env.CASHFREE_SECRET_KEY;
+const cashfreeEnvironment = process.env.CASHFREE_ENVIRONMENT === 'production' ? 'production' : 'sandbox';
+const cashfreeApiBase = cashfreeEnvironment === 'production' ? 'https://api.cashfree.com/pg' : 'https://sandbox.cashfree.com/pg';
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 const googleRedirectUri = process.env.GOOGLE_REDIRECT_URI || `http://localhost:${PORT}/api/auth/google/callback`;
@@ -243,33 +243,37 @@ app.post('/api/payments/checkout', auth('guest'), async (req, res) => {
   const booking = store.bookings.find((item) => item.id === req.body.bookingId && item.userId === req.auth.id);
   if (!booking) return res.status(404).json({ error: 'Booking not found.' });
   const paymentMethod = ['card', 'upi', 'netbanking', 'wallet'].includes(req.body.paymentMethod) ? req.body.paymentMethod : 'card';
-  if (razorpay) {
-    const order = await razorpay.orders.create({ amount: booking.total * 100, currency: 'INR', receipt: booking.id, notes: { bookingId: booking.id, paymentMethod } });
+  if (cashfreeAppId && cashfreeSecretKey) {
+    const orderId = `axom_${booking.id.replace(/-/g, '')}`;
+    const cashfreeResponse = await fetch(`${cashfreeApiBase}/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-api-version': '2023-08-01', 'x-client-id': cashfreeAppId, 'x-client-secret': cashfreeSecretKey }, body: JSON.stringify({ order_id: orderId, order_amount: booking.total, order_currency: 'INR', customer_details: { customer_id: req.auth.id, customer_name: readStore().users.find((user) => user.id === req.auth.id)?.name || 'AxomStay guest', customer_email: readStore().users.find((user) => user.id === req.auth.id)?.email || 'guest@axomstay.local', customer_phone: readStore().users.find((user) => user.id === req.auth.id)?.phone || '9999999999' }, order_meta: { return_url: `${req.protocol}://${req.get('host')}/?cashfree=return&booking=${booking.id}&order_id={order_id}` }, order_note: `AxomStay booking ${booking.id}` }) });
+    const order = await cashfreeResponse.json();
+    if (!cashfreeResponse.ok || !order.payment_session_id) return res.status(502).json({ error: order.message || 'Cashfree could not create a payment order.' });
     booking.paymentMethod = paymentMethod;
-    booking.razorpayOrderId = order.id;
+    booking.cashfreeOrderId = order.order_id;
     writeStore(store);
-    return res.json({ mode: 'razorpay', keyId: razorpayKeyId, orderId: order.id, amount: order.amount, currency: order.currency, bookingId: booking.id });
+    return res.json({ mode: 'cashfree', environment: cashfreeEnvironment, paymentSessionId: order.payment_session_id, orderId: order.order_id, bookingId: booking.id });
   }
   booking.status = 'paid';
   booking.paidAt = new Date().toISOString();
   booking.paymentMethod = paymentMethod;
   store.payments.push({ id: crypto.randomUUID(), bookingId: booking.id, amount: booking.total, method: paymentMethod, mode: 'demo', status: 'paid', createdAt: new Date().toISOString() });
   writeStore(store);
-  res.json({ mode: 'demo', booking, message: `Demo ${paymentMethod} payment successful. Add RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET for live payments.` });
+  res.json({ mode: 'demo', booking, message: `Demo ${paymentMethod} payment successful. Add CASHFREE_APP_ID and CASHFREE_SECRET_KEY for live payments.` });
 });
 
-app.post('/api/payments/verify', auth('guest'), (req, res) => {
-  if (!razorpay) return res.status(503).json({ error: 'Razorpay is not configured.' });
-  const { bookingId, razorpayOrderId, razorpayPaymentId, razorpaySignature } = req.body;
+app.post('/api/payments/verify', auth('guest'), async (req, res) => {
+  if (!cashfreeAppId || !cashfreeSecretKey) return res.status(503).json({ error: 'Cashfree is not configured.' });
+  const { bookingId, orderId } = req.body;
   const store = readStore();
   const booking = store.bookings.find((item) => item.id === bookingId && item.userId === req.auth.id);
-  if (!booking || booking.razorpayOrderId !== razorpayOrderId) return res.status(404).json({ error: 'Booking or Razorpay order not found.' });
-  const expectedSignature = crypto.createHmac('sha256', razorpayKeySecret).update(`${razorpayOrderId}|${razorpayPaymentId}`).digest('hex');
-  if (expectedSignature !== razorpaySignature) return res.status(400).json({ error: 'Payment signature could not be verified.' });
+  if (!booking || booking.cashfreeOrderId !== orderId) return res.status(404).json({ error: 'Booking or Cashfree order not found.' });
+  const cashfreeResponse = await fetch(`${cashfreeApiBase}/orders/${orderId}`, { headers: { 'x-api-version': '2023-08-01', 'x-client-id': cashfreeAppId, 'x-client-secret': cashfreeSecretKey } });
+  const order = await cashfreeResponse.json();
+  if (!cashfreeResponse.ok || order.order_status !== 'PAID') return res.status(400).json({ error: 'Cashfree has not marked this payment as paid yet.' });
   booking.status = 'paid';
-  booking.razorpayPaymentId = razorpayPaymentId;
+  booking.cashfreePaymentId = order.cf_order_id;
   booking.paidAt = new Date().toISOString();
-  store.payments.push({ id: crypto.randomUUID(), bookingId, amount: booking.total, method: booking.paymentMethod || 'card', provider: 'razorpay', status: 'paid', createdAt: new Date().toISOString() });
+  store.payments.push({ id: crypto.randomUUID(), bookingId, amount: booking.total, method: booking.paymentMethod || 'card', provider: 'cashfree', status: 'paid', createdAt: new Date().toISOString() });
   writeStore(store);
   res.json({ booking, message: 'Payment successful and booking confirmed.' });
 });
