@@ -19,6 +19,7 @@ const cashfreeAppId = process.env.CASHFREE_APP_ID;
 const cashfreeSecretKey = process.env.CASHFREE_SECRET_KEY;
 const cashfreeEnvironment = process.env.CASHFREE_ENVIRONMENT === 'production' ? 'production' : 'sandbox';
 const cashfreeApiBase = cashfreeEnvironment === 'production' ? 'https://api.cashfree.com/pg' : 'https://sandbox.cashfree.com/pg';
+const upiId = process.env.UPI_ID || '';
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 const googleRedirectUri = process.env.GOOGLE_REDIRECT_URI || `http://localhost:${PORT}/api/auth/google/callback`;
@@ -242,7 +243,8 @@ app.post('/api/payments/checkout', auth('guest'), async (req, res) => {
   const store = readStore();
   const booking = store.bookings.find((item) => item.id === req.body.bookingId && item.userId === req.auth.id);
   if (!booking) return res.status(404).json({ error: 'Booking not found.' });
-  const paymentMethod = ['card', 'upi', 'netbanking', 'wallet'].includes(req.body.paymentMethod) ? req.body.paymentMethod : 'card';
+  const paymentMethod = ['card', 'upi', 'netbanking', 'wallet', 'upi_manual'].includes(req.body.paymentMethod) ? req.body.paymentMethod : 'card';
+  if (paymentMethod === 'upi_manual') return res.json({ mode: 'manual_upi', upiId, bookingId: booking.id, amount: booking.total });
   if (cashfreeAppId && cashfreeSecretKey) {
     const orderId = `axom_${booking.id.replace(/-/g, '')}`;
     const cashfreeResponse = await fetch(`${cashfreeApiBase}/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-api-version': '2023-08-01', 'x-client-id': cashfreeAppId, 'x-client-secret': cashfreeSecretKey }, body: JSON.stringify({ order_id: orderId, order_amount: booking.total, order_currency: 'INR', customer_details: { customer_id: req.auth.id, customer_name: readStore().users.find((user) => user.id === req.auth.id)?.name || 'AxomStay guest', customer_email: readStore().users.find((user) => user.id === req.auth.id)?.email || 'guest@axomstay.local', customer_phone: readStore().users.find((user) => user.id === req.auth.id)?.phone || '9999999999' }, order_meta: { return_url: `${req.protocol}://${req.get('host')}/?cashfree=return&booking=${booking.id}&order_id={order_id}` }, order_note: `AxomStay booking ${booking.id}` }) });
@@ -259,6 +261,20 @@ app.post('/api/payments/checkout', auth('guest'), async (req, res) => {
   store.payments.push({ id: crypto.randomUUID(), bookingId: booking.id, amount: booking.total, method: paymentMethod, mode: 'demo', status: 'paid', createdAt: new Date().toISOString() });
   writeStore(store);
   res.json({ mode: 'demo', booking, message: `Demo ${paymentMethod} payment successful. Add CASHFREE_APP_ID and CASHFREE_SECRET_KEY for live payments.` });
+});
+
+app.post('/api/payments/manual-upi', auth('guest'), (req, res) => {
+  const { bookingId, transactionId } = req.body;
+  if (!upiId) return res.status(503).json({ error: 'UPI payment is not configured yet.' });
+  if (!transactionId || String(transactionId).trim().length < 6) return res.status(400).json({ error: 'Enter the UPI transaction reference after paying.' });
+  const store = readStore();
+  const booking = store.bookings.find((item) => item.id === bookingId && item.userId === req.auth.id);
+  if (!booking) return res.status(404).json({ error: 'Booking not found.' });
+  booking.status = 'payment_review';
+  booking.paymentMethod = 'upi_manual';
+  booking.transactionId = String(transactionId).trim();
+  writeStore(store);
+  res.json({ booking, message: 'Payment reference submitted. Your host will confirm the booking shortly.' });
 });
 
 app.post('/api/payments/verify', auth('guest'), async (req, res) => {
