@@ -33,7 +33,20 @@ const twilioClient = twilioAccountSid && twilioAuthToken && !twilioConfigError ?
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('trust proxy', 1);
-app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", 'https://unpkg.com', 'https://sdk.cashfree.com'],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+      imgSrc: ["'self'", 'data:', 'https://images.unsplash.com'],
+      connectSrc: ["'self'", 'https://sandbox.cashfree.com', 'https://api.cashfree.com'],
+      frameSrc: ["'self'", 'https://*.cashfree.com']
+    }
+  }
+}));
 app.use('/api/auth', rateLimit({ windowMs: 15 * 60 * 1000, limit: 100, standardHeaders: 'draft-7', legacyHeaders: false }));
 app.use('/api/auth/otp', rateLimit({ windowMs: 15 * 60 * 1000, limit: 5, standardHeaders: 'draft-7', legacyHeaders: false }));
 app.use('/uploads', express.static(uploadsPath));
