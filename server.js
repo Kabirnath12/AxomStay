@@ -24,7 +24,8 @@ const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
 const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioFromNumber = process.env.TWILIO_PHONE_NUMBER;
 const twilioMessagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
-const twilioClient = twilioAccountSid && twilioAuthToken ? twilio(twilioAccountSid, twilioAuthToken) : null;
+const twilioConfigError = twilioAccountSid && !/^AC[a-zA-Z0-9]{32}$/.test(twilioAccountSid);
+const twilioClient = twilioAccountSid && twilioAuthToken && !twilioConfigError ? twilio(twilioAccountSid, twilioAuthToken) : null;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -135,6 +136,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
 app.post('/api/auth/otp/request', async (req, res) => {
   const phone = String(req.body.phone || '').replace(/\D/g, '');
   if (phone.length < 10) return res.status(400).json({ error: 'Enter a valid mobile number.' });
+  if (twilioConfigError) return res.status(503).json({ error: 'Twilio is configured incorrectly. TWILIO_ACCOUNT_SID must start with AC and be copied from the Twilio Console.' });
   const store = readStore();
   let user = store.users.find((item) => item.phone === phone);
   if (!user) {
