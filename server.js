@@ -225,8 +225,10 @@ app.post('/api/bookings', auth('guest'), (req, res) => {
   const property = store.properties.find((item) => item.id === propertyId && item.status === 'published');
   const start = new Date(checkIn);
   const end = new Date(checkOut);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
   const nights = Math.ceil((end - start) / 86400000);
-  if (!property || !checkIn || !checkOut || nights < 1 || Number(guests) < 1 || Number(guests) > property.guests) return res.status(400).json({ error: 'Choose valid dates and guests for this property.' });
+  if (!property || !checkIn || !checkOut || start < today || nights < 1 || Number(guests) < 1 || Number(guests) > property.guests) return res.status(400).json({ error: 'Choose future dates and valid guests for this property.' });
   const booking = { id: crypto.randomUUID(), userId: req.auth.id, hostId: property.hostId, propertyId, propertyTitle: property.title, checkIn, checkOut, guests: Number(guests), nights, total: nights * property.price, status: 'awaiting_payment', createdAt: new Date().toISOString() };
   store.bookings.push(booking);
   writeStore(store);
