@@ -23,10 +23,10 @@ const upiId = process.env.UPI_ID || '';
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 const googleRedirectUri = process.env.GOOGLE_REDIRECT_URI || `http://localhost:${PORT}/api/auth/google/callback`;
-const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
-const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
-const twilioFromNumber = process.env.TWILIO_PHONE_NUMBER;
-const twilioMessagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
+const twilioAccountSid = String(process.env.TWILIO_ACCOUNT_SID || '').trim().replace(/^['"]|['"]$/g, '');
+const twilioAuthToken = String(process.env.TWILIO_AUTH_TOKEN || '').trim().replace(/^['"]|['"]$/g, '');
+const twilioFromNumber = String(process.env.TWILIO_PHONE_NUMBER || '').trim().replace(/^['"]|['"]$/g, '');
+const twilioMessagingServiceSid = String(process.env.TWILIO_MESSAGING_SERVICE_SID || '').trim().replace(/^['"]|['"]$/g, '');
 const twilioConfigError = twilioAccountSid && !/^AC[a-zA-Z0-9]{32}$/.test(twilioAccountSid);
 const twilioClient = twilioAccountSid && twilioAuthToken && !twilioConfigError ? twilio(twilioAccountSid, twilioAuthToken) : null;
 
