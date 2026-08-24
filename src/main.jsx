@@ -3,26 +3,34 @@ import ReactDOM from 'react-dom/client';
 import './styles.css';
 
 const siteInfo = {
-  name: 'New Horizon Farm',
-  tagline: 'Guwahati Cab Services',
-  description: 'Trusted intercity and local rides paired with a peaceful farm stay experience in the heart of Assam.',
+  name: 'AxomStay',
+  tagline: 'Your Assam journey, thoughtfully planned.',
+  description: 'Discover Assam with one trusted local team for tour planning, comfortable cabs, curated packages, and a peaceful stay at New Horizon Farm.',
   phone: '+91 60039 15793',
   whatsapp: 'https://wa.me/916003915793',
-  location: 'Silpukhuri, Sarania Hills, Guwahati, Assam, India'
+  location: 'Guwahati, Assam, India'
 };
 
 const services = [
-  { title: 'Airport & Local Rides', text: 'Comfortable pickups and drop-offs for families, business travelers, and daily commuters in Guwahati.' },
-  { title: 'Outstation Tours', text: 'Safe, affordable, and well-planned trips to Shillong, Kaziranga, Bhalukpong, and beyond.' },
-  { title: 'Farm Stay Experience', text: 'A unique countryside stay with fresh air, warm hospitality, and a relaxing nature retreat.' },
-  { title: 'Event & Family Travel', text: 'Dedicated support for family visits, events, functions, and special group journeys.' }
+  { title: 'Assam Tour Planning', text: 'Get practical local guidance for Guwahati, Kaziranga, Majuli, Sivasagar, Haflong, Shillong, and the wider Northeast.' },
+  { title: 'Curated Travel Packages', text: 'Choose a relaxed wildlife escape, a culture-filled itinerary, or a flexible family holiday planned around your time and budget.' },
+  { title: 'New Horizon Farm Stay', text: 'Stay close to nature with a warm local experience, fresh surroundings, and an easy base for exploring Assam.' },
+  { title: 'Guwahati Cab Services', text: 'Book reliable airport transfers, local rides, sightseeing cars, and outstation vehicles with familiar local drivers.' }
 ];
 
+const packages = [
+  { title: 'Gateway to Assam', duration: '3 days / 2 nights', text: 'Guwahati highlights, Kamakhya Temple, river views, local food, and a comfortable New Horizon Farm stay.' },
+  { title: 'Wild Assam Escape', duration: '4 days / 3 nights', text: 'Travel from Guwahati to Kaziranga with scenic stops, a wildlife-focused itinerary, and dependable transfers.' },
+  { title: 'Culture & Countryside', duration: '5 days / 4 nights', text: 'Experience Sivasagar, tea country, village life, and the slower rhythm of Assam with a flexible local guide.' }
+];
+
+const destinations = ['Guwahati', 'Kaziranga', 'Majuli', 'Sivasagar', 'Haflong', 'Shillong'];
+
 const stats = [
-  { value: '2021', label: 'Business founded' },
-  { value: '24/7', label: 'Support' },
-  { value: '100%', label: 'Local care' },
-  { value: 'Assam', label: 'Service area' }
+  { value: '2021', label: 'Local journey started' },
+  { value: '1 team', label: 'Plan, stay, travel' },
+  { value: '24/7', label: 'Trip support' },
+  { value: 'Assam', label: 'Our home' }
 ];
 
 const gallery = [
@@ -109,18 +117,19 @@ function App() {
         <div className="container nav">
           <div className="brand">
             <span className="brand-mark">N</span>
-            <span>{siteInfo.name}</span>
+            <span>{siteInfo.name}<small> Assam travel & stays</small></span>
           </div>
           <nav className="nav-links">
-            <a href="#about">About</a>
+            <a href="#about">About AxomStay</a>
+            <a href="#packages">Packages</a>
+            <a href="#farm">New Horizon Farm</a>
             <a href="#services">Services</a>
-            <a href="#experience">Experience</a>
             <a href="#gallery">Gallery</a>
             <a href="#contact">Contact</a>
           </nav>
           <div className="nav-actions">
             <a className="ghost-btn" href="tel:+916003915793">Call now</a>
-            <a className="primary-btn" href="#contact">Book a ride</a>
+            <a className="primary-btn" href="#contact">Plan a trip</a>
           </div>
         </div>
       </header>
@@ -128,11 +137,11 @@ function App() {
       <main>
         <section className="hero">
           <div className="container hero-content">
-            <div className="eyebrow">Trusted transport and homestay care</div>
-            <h1>{siteInfo.tagline}</h1>
+            <div className="eyebrow">Assam travel, stays, and local guidance</div>
+            <h1>{siteInfo.name}</h1>
             <p className="hero-copy">{siteInfo.description}</p>
             <div className="hero-actions">
-              <a className="cta-btn" href="#contact">Plan my trip</a>
+              <a className="cta-btn" href="#contact">Plan my Assam trip</a>
               <a className="ghost-btn hero-ghost" href="https://wa.me/916003915793" target="_blank" rel="noreferrer">WhatsApp</a>
             </div>
           </div>
@@ -141,7 +150,7 @@ function App() {
         <div className="container card-strip">
           <div className="booking-panel">
             <div className="field">
-              <label>Pickup</label>
+              <label>Starting point</label>
               <select value={booking.pickup} onChange={(event) => setBooking({ ...booking, pickup: event.target.value })}>
                 <option>Guwahati Airport</option>
                 <option>Guwahati Railway Station</option>
@@ -149,19 +158,22 @@ function App() {
               </select>
             </div>
             <div className="field">
-              <label>Destination</label>
+              <label>Where to go</label>
               <select value={booking.destination} onChange={(event) => setBooking({ ...booking, destination: event.target.value })}>
-                <option>Shillong / Kaziranga</option>
+                <option>Kaziranga</option>
                 <option>Bhalukpong</option>
+                <option>Majuli</option>
+                <option>Shillong</option>
                 <option>Local Guwahati</option>
               </select>
             </div>
             <div className="field">
-              <label>Travel type</label>
+              <label>What you need</label>
               <select onChange={(event) => setBooking({ ...booking, type: event.target.value })} defaultValue="Outstation">
-                <option>Outstation</option>
-                <option>Airport pickup</option>
+                <option>Tour package</option>
+                <option>Cab service</option>
                 <option>Farm stay</option>
+                <option>Travel guidance</option>
               </select>
             </div>
             <div className="field">
@@ -173,21 +185,33 @@ function App() {
                 <option value="6">5+ people</option>
               </select>
             </div>
-            <a className="primary-btn" href="#contact">Request quote</a>
+            <a className="primary-btn" href="#contact">Start planning</a>
           </div>
         </div>
 
         <section className="section" id="about">
           <div className="container split-grid">
             <div>
-              <div className="eyebrow dark">Our story</div>
-              <h2>Built from real service, trusted by families and travelers.</h2>
+              <div className="eyebrow dark">About AxomStay</div>
+              <h2>A local Assam travel companion, from the first question to the journey home.</h2>
             </div>
             <div>
               <p>
-                We started with a simple goal: make travel dependable, warm, and affordable for people in Assam.
-                Over time, that service expanded into a more complete guest experience — combining trusted cab service with a welcoming farm stay for those who want comfort, nature, and genuine hospitality.
+                AxomStay brings together the parts of an Assam holiday that are usually difficult to coordinate. We help visitors understand where to go, how long to stay, what to see, how to travel between places, and where to rest at the end of the day.
+                Our journey began with Guwahati Cab Services in 2021 and grew into a broader hospitality idea through New Horizon Farm. Today, AxomStay connects local transport, honest tour guidance, flexible packages, and a personal farm stay experience.
               </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="section destinations-section">
+          <div className="container split-grid">
+            <div>
+              <div className="eyebrow dark">Explore Assam</div>
+              <h2>One starting point for temples, wildlife, islands, hills, and tea country.</h2>
+            </div>
+            <div className="destination-list">
+              {destinations.map((destination) => <span key={destination}>{destination}</span>)}
             </div>
           </div>
         </section>
@@ -221,16 +245,56 @@ function App() {
           </div>
         </section>
 
+        <section className="section alt" id="packages">
+          <div className="container">
+            <div className="section-head">
+              <div className="eyebrow dark">Travel packages</div>
+              <h2>Flexible Assam itineraries for first-time visitors and returning guests.</h2>
+              <p>These are starting ideas, not fixed tours. Tell us your dates, group size, interests, and budget and we can shape the route around you.</p>
+            </div>
+            <div className="package-grid">
+              {packages.map((item) => (
+                <article className="package-card" key={item.title}>
+                  <div className="package-duration">{item.duration}</div>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                  <a href="#contact">Discuss this package →</a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section" id="farm">
+          <div className="container experience-grid">
+            <div className="experience-panel">
+              <div className="eyebrow dark">New Horizon Farm</div>
+              <h2>A calm place to stay, reset, and experience Assam more personally.</h2>
+              <p>New Horizon Farm is the hospitality side of the AxomStay story. It is for guests who want more than a quick hotel stop: a quieter setting, local warmth, time to breathe, and a helpful base for their Assam trip.</p>
+              <ul>
+                <li>Peaceful surroundings for couples, families, and slow travelers</li>
+                <li>A welcoming local stay connected to practical travel support</li>
+                <li>Easy help arranging cabs, sightseeing, transfers, and day trips</li>
+                <li>A natural choice for guests who want to combine stay and exploration</li>
+              </ul>
+              <a className="primary-btn" href="#contact">Ask about a farm stay</a>
+            </div>
+            <div className="image-panel">
+              <img src="https://images.unsplash.com/photo-1507560461415-997cd00bfd45?auto=format&fit=crop&w=1000&q=80" alt="Green countryside near New Horizon Farm" />
+            </div>
+          </div>
+        </section>
+
         <section className="section alt" id="experience">
           <div className="container experience-grid">
             <div className="experience-panel">
               <div className="eyebrow dark">Why choose us</div>
-              <h2>Professional drivers, flexible plans, and a genuine service mindset.</h2>
+              <h2>Everything is designed to make Assam feel easier to explore.</h2>
               <ul>
-                <li>Clean and comfortable rides for local and outstation travel</li>
-                <li>Friendly support for family trips, work travel, and group bookings</li>
-                <li>Farm stay hospitality with calm surroundings and personal care</li>
-                <li>Transparent communication and dependable scheduling</li>
+                <li>Clear guidance before you arrive, so your days are planned with confidence</li>
+                <li>Local cab support for airport transfers, sightseeing, and outstation routes</li>
+                <li>Farm stay hospitality for a more personal and restful Assam experience</li>
+                <li>Transparent communication with one team across your whole journey</li>
               </ul>
             </div>
             <div className="image-panel">
@@ -257,8 +321,9 @@ function App() {
           <div className="container contact-box">
             <div>
               <div className="eyebrow dark">Contact</div>
-              <h2>Let’s plan your next ride or stay.</h2>
+              <h2>Tell us what kind of Assam experience you want.</h2>
               <p>{siteInfo.location}</p>
+              <p>Share your travel dates, places you want to visit, preferred pace, and whether you need a package, cab, guidance, or farm stay. We will help you turn the idea into a practical plan.</p>
               <p><strong>Phone:</strong> {siteInfo.phone}</p>
               <p><strong>WhatsApp:</strong> <a href={siteInfo.whatsapp} target="_blank" rel="noreferrer">Chat instantly</a></p>
             </div>
