@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles.css';
 
@@ -32,21 +32,21 @@ const destinationShowcase = [
     name: 'Meghalaya',
     eyebrow: 'Waterfalls and living roots',
     text: 'Plan a refreshing hill escape through Shillong, Cherrapunji, Dawki, and the beautiful landscapes of Meghalaya.',
-    image: 'https://images.unsplash.com/photo-1518002054494-3a6f94352e9d?auto=format&fit=crop&w=1200&q=85'
+    image: '/images/meghalaya/sohan-rayguru-8pg0LoPoGEo-unsplash.jpg'
   },
   {
     slug: 'assam',
     name: 'Kaziranga',
     eyebrow: 'Wildlife and wetland country',
     text: 'Experience Assam’s iconic national park with a practical route, comfortable cab transfers, and time for a memorable safari.',
-    image: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=1200&q=85'
+    image: '/images/assam/santanu-misra-r9YOv6MoDM4-unsplash.jpg'
   },
   {
     slug: 'arunachal',
     name: 'Arunachal Pradesh',
     eyebrow: 'High mountains and quiet valleys',
     text: 'Travel towards Tawang, Dirang, Bomdila, or Ziro with a route planned around permits, weather, distance, and your pace.',
-    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=85'
+    image: '/images/arunachal-pradesh/kaushik-gogoi-Mw-s5Co4rOE-unsplash.jpg'
   }
 ];
 
@@ -55,12 +55,12 @@ const destinationPages = {
     title: 'Assam',
     kicker: 'The heart of your Northeast journey',
     intro: 'Assam is a land of mighty rivers, tea gardens, wildlife, ancient temples, island culture, and welcoming communities. It is the ideal place to begin a slower, richer journey through the Northeast.',
-    hero: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1800&q=85',
+    hero: '/images/assam/avinash-sharma-5noTAPYqDws-unsplash.jpg',
     places: [
-      { name: 'Kaziranga National Park', detail: 'Spend time in one of India’s most celebrated wildlife landscapes, known for the one-horned rhinoceros, elephants, wetlands, and grasslands.', image: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=1000&q=85' },
-      { name: 'Majuli Island', detail: 'Discover river island life, satras, mask-making traditions, music, and a peaceful cultural rhythm shaped by the Brahmaputra.', image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1000&q=85' },
-      { name: 'Guwahati & Kamakhya', detail: 'Explore Assam’s gateway city, the Kamakhya Temple, the Brahmaputra riverfront, local markets, and the region’s food culture.', image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1000&q=85' },
-      { name: 'Sivasagar & Tea Country', detail: 'Follow the history of the Ahom kingdom and continue through green tea landscapes, heritage towns, and village roads.', image: 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&w=1000&q=85' }
+      { name: 'Kaziranga National Park', detail: 'Spend time in one of India’s most celebrated wildlife landscapes, known for the one-horned rhinoceros, elephants, wetlands, and grasslands.', image: '/images/assam/santanu-misra-r9YOv6MoDM4-unsplash.jpg' },
+      { name: 'Majuli Island', detail: 'Discover river island life, satras, mask-making traditions, music, and a peaceful cultural rhythm shaped by the Brahmaputra.', image: '/images/assam/navarun-baishya-Qxkqa8pj3eA-unsplash.jpg' },
+      { name: 'Guwahati & Kamakhya', detail: 'Explore Assam’s gateway city, the Kamakhya Temple, the Brahmaputra riverfront, local markets, and the region’s food culture.', image: '/images/assam/nilotpal-kalita-POsw8VN4bnc-unsplash.jpg' },
+      { name: 'Sivasagar & Tea Country', detail: 'Follow the history of the Ahom kingdom and continue through green tea landscapes, heritage towns, and village roads.', image: '/images/assam/avinash-sharma-5noTAPYqDws-unsplash.jpg' }
     ],
     notes: ['Best for wildlife, culture, temples, tea gardens, and river experiences', 'Ideal starting point for travellers arriving through Guwahati', 'Comfortable routes can combine Guwahati, Kaziranga, and Sivasagar']
   },
@@ -68,12 +68,12 @@ const destinationPages = {
     title: 'Meghalaya',
     kicker: 'Cloud country, waterfalls, and living roots',
     intro: 'Meghalaya invites you into a cooler world of pine forests, dramatic waterfalls, limestone caves, living root bridges, and hill communities. Every route feels scenic, but the best trips leave room for weather and quiet discovery.',
-    hero: 'https://images.unsplash.com/photo-1518002054494-3a6f94352e9d?auto=format&fit=crop&w=1800&q=85',
+    hero: '/images/meghalaya/sohan-rayguru-8pg0LoPoGEo-unsplash.jpg',
     places: [
-      { name: 'Shillong', detail: 'Enjoy the hill capital’s cafés, viewpoints, music culture, Ward’s Lake, and easy access to the surrounding countryside.', image: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1000&q=85' },
-      { name: 'Cherrapunji', detail: 'See misty valleys, waterfalls, caves, and monsoon-shaped landscapes around one of the world’s most famous rain-fed regions.', image: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=1000&q=85' },
-      { name: 'Dawki & Mawlynnong', detail: 'Combine the clear waters of the Umngot River with village walks, borderland scenery, and the famous living root bridge country.', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1000&q=85' },
-      { name: 'Nongriat', detail: 'For active travellers, the journey to the double-decker living root bridge is a memorable walk through deep green valleys.', image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1000&q=85' }
+      { name: 'Shillong', detail: 'Enjoy the hill capital’s cafés, viewpoints, music culture, Ward’s Lake, and easy access to the surrounding countryside.', image: '/images/meghalaya/sohan-rayguru-BXTaLkQRw5o-unsplash.jpg' },
+      { name: 'Cherrapunji', detail: 'See misty valleys, waterfalls, caves, and monsoon-shaped landscapes around one of the world’s most famous rain-fed regions.', image: '/images/meghalaya/ananya-bilimale-FBbUri5SIBE-unsplash.jpg' },
+      { name: 'Dawki & Mawlynnong', detail: 'Combine the clear waters of the Umngot River with village walks, borderland scenery, and the famous living root bridge country.', image: '/images/meghalaya/gautham-krishna-7TLlTfs7El8-unsplash.jpg' },
+      { name: 'Nongriat', detail: 'For active travellers, the journey to the double-decker living root bridge is a memorable walk through deep green valleys.', image: '/images/meghalaya/mayur-more-hmK1AMi_tF8-unsplash.jpg' }
     ],
     notes: ['Best for waterfalls, forests, viewpoints, caves, and gentle adventure', 'Weather can change quickly, so flexible planning is valuable', 'A private cab makes the scenic routes and early starts much easier']
   },
@@ -81,12 +81,12 @@ const destinationPages = {
     title: 'Arunachal Pradesh',
     kicker: 'High passes, monasteries, and wide-open valleys',
     intro: 'Arunachal Pradesh is a journey for travellers who want altitude, silence, powerful mountain scenery, and living Himalayan cultures. Routes are longer and more regulated, which makes local planning especially important.',
-    hero: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=85',
+    hero: '/images/arunachal-pradesh/kaushik-gogoi-Mw-s5Co4rOE-unsplash.jpg',
     places: [
-      { name: 'Tawang', detail: 'Visit one of the world’s great high-altitude monasteries and experience dramatic roads, mountain passes, and remote Himalayan views.', image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1000&q=85' },
-      { name: 'Dirang & Bomdila', detail: 'Slow down in mountain valleys with hot springs, monasteries, apple orchards, and a gentler introduction to the high country.', image: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1000&q=85' },
-      { name: 'Ziro Valley', detail: 'Explore a beautiful cultural landscape known for its distinctive villages, rice fields, music, and green valley views.', image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=85' },
-      { name: 'Itanagar & Eastern Routes', detail: 'Use the capital as a practical gateway and build a longer route around the landscapes and communities of eastern Arunachal.', image: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1000&q=85' }
+      { name: 'Tawang', detail: 'Visit one of the world’s great high-altitude monasteries and experience dramatic roads, mountain passes, and remote Himalayan views.', image: '/images/arunachal-pradesh/ananya-bilimale-FBbUri5SIBE-unsplash.jpg' },
+      { name: 'Dirang & Bomdila', detail: 'Slow down in mountain valleys with hot springs, monasteries, apple orchards, and a gentler introduction to the high country.', image: '/images/arunachal-pradesh/gautham-krishna-7TLlTfs7El8-unsplash.jpg' },
+      { name: 'Ziro Valley', detail: 'Explore a beautiful cultural landscape known for its distinctive villages, rice fields, music, and green valley views.', image: '/images/arunachal-pradesh/mayur-more-hmK1AMi_tF8-unsplash.jpg' },
+      { name: 'Itanagar & Eastern Routes', detail: 'Use the capital as a practical gateway and build a longer route around the landscapes and communities of eastern Arunachal.', image: '/images/arunachal-pradesh/sohan-rayguru-8pg0LoPoGEo-unsplash.jpg' }
     ],
     notes: ['Best for mountain landscapes, monasteries, valleys, and slow road journeys', 'Entry permits and route conditions should be checked before travel', 'Plan extra time for distance, weather, and mountain roads']
   }
@@ -160,11 +160,47 @@ const stats = [
 ];
 
 const gallery = [
-  'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=800&q=80'
+  '/images/assam/avinash-sharma-5noTAPYqDws-unsplash.jpg',
+  '/images/assam/santanu-misra-r9YOv6MoDM4-unsplash.jpg',
+  '/images/meghalaya/sohan-rayguru-8pg0LoPoGEo-unsplash.jpg',
+  '/images/arunachal-pradesh/utkarsh-b-PNrVnDB1dPQ-unsplash.jpg'
 ];
+
+const heroSlides = [
+  { image: '/images/assam/avinash-sharma-5noTAPYqDws-unsplash.jpg', label: 'Tea gardens and living culture', title: 'Breathe in Assam' },
+  { image: '/images/assam/santanu-misra-r9YOv6MoDM4-unsplash.jpg', label: 'Wildlife journeys in Kaziranga', title: 'Meet the wild heart of Assam' }
+];
+
+function HeroSlideshow() {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setActiveSlide((current) => (current + 1) % heroSlides.length), 5500);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="hero">
+      <div className="hero-slides" aria-hidden="true">
+        {heroSlides.map((slide, index) => <img className={`hero-slide ${index === activeSlide ? 'active' : ''}`} src={slide.image} alt="" key={slide.image} />)}
+      </div>
+      <div className="hero-shade" />
+      <div className="container hero-content">
+        <div className="eyebrow">{heroSlides[activeSlide].label}</div>
+        <h1>{siteInfo.name}</h1>
+        <p className="hero-slide-title">{heroSlides[activeSlide].title}</p>
+        <p className="hero-copy">{siteInfo.description}</p>
+        <div className="hero-actions">
+          <a className="cta-btn" href="#contact">Plan my Assam trip</a>
+          <a className="ghost-btn hero-ghost" href="https://wa.me/916003915793" target="_blank" rel="noreferrer">WhatsApp</a>
+        </div>
+        <div className="hero-dots" aria-label="Hero slideshow controls">
+          {heroSlides.map((slide, index) => <button className={index === activeSlide ? 'active' : ''} aria-label={`Show ${slide.title}`} onClick={() => setActiveSlide(index)} key={slide.image} />)}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function AdminPanel() {
   const [adminKey, setAdminKey] = useState('');
@@ -261,17 +297,7 @@ function App() {
       </header>
 
       <main>
-        <section className="hero">
-          <div className="container hero-content">
-            <div className="eyebrow">Assam travel, stays, and local guidance</div>
-            <h1>{siteInfo.name}</h1>
-            <p className="hero-copy">{siteInfo.description}</p>
-            <div className="hero-actions">
-              <a className="cta-btn" href="#contact">Plan my Assam trip</a>
-              <a className="ghost-btn hero-ghost" href="https://wa.me/916003915793" target="_blank" rel="noreferrer">WhatsApp</a>
-            </div>
-          </div>
-        </section>
+        <HeroSlideshow />
 
         <div className="container card-strip">
           <div className="booking-panel">
