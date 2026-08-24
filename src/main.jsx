@@ -28,24 +28,129 @@ const destinations = ['Guwahati', 'Kaziranga', 'Majuli', 'Sivasagar', 'Haflong',
 
 const destinationShowcase = [
   {
+    slug: 'meghalaya',
     name: 'Meghalaya',
     eyebrow: 'Waterfalls and living roots',
     text: 'Plan a refreshing hill escape through Shillong, Cherrapunji, Dawki, and the beautiful landscapes of Meghalaya.',
     image: 'https://images.unsplash.com/photo-1518002054494-3a6f94352e9d?auto=format&fit=crop&w=1200&q=85'
   },
   {
+    slug: 'assam',
     name: 'Kaziranga',
     eyebrow: 'Wildlife and wetland country',
     text: 'Experience Assam’s iconic national park with a practical route, comfortable cab transfers, and time for a memorable safari.',
     image: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=1200&q=85'
   },
   {
+    slug: 'arunachal',
     name: 'Arunachal Pradesh',
     eyebrow: 'High mountains and quiet valleys',
     text: 'Travel towards Tawang, Dirang, Bomdila, or Ziro with a route planned around permits, weather, distance, and your pace.',
     image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=85'
   }
 ];
+
+const destinationPages = {
+  assam: {
+    title: 'Assam',
+    kicker: 'The heart of your Northeast journey',
+    intro: 'Assam is a land of mighty rivers, tea gardens, wildlife, ancient temples, island culture, and welcoming communities. It is the ideal place to begin a slower, richer journey through the Northeast.',
+    hero: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1800&q=85',
+    places: [
+      { name: 'Kaziranga National Park', detail: 'Spend time in one of India’s most celebrated wildlife landscapes, known for the one-horned rhinoceros, elephants, wetlands, and grasslands.', image: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=1000&q=85' },
+      { name: 'Majuli Island', detail: 'Discover river island life, satras, mask-making traditions, music, and a peaceful cultural rhythm shaped by the Brahmaputra.', image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1000&q=85' },
+      { name: 'Guwahati & Kamakhya', detail: 'Explore Assam’s gateway city, the Kamakhya Temple, the Brahmaputra riverfront, local markets, and the region’s food culture.', image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1000&q=85' },
+      { name: 'Sivasagar & Tea Country', detail: 'Follow the history of the Ahom kingdom and continue through green tea landscapes, heritage towns, and village roads.', image: 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&w=1000&q=85' }
+    ],
+    notes: ['Best for wildlife, culture, temples, tea gardens, and river experiences', 'Ideal starting point for travellers arriving through Guwahati', 'Comfortable routes can combine Guwahati, Kaziranga, and Sivasagar']
+  },
+  meghalaya: {
+    title: 'Meghalaya',
+    kicker: 'Cloud country, waterfalls, and living roots',
+    intro: 'Meghalaya invites you into a cooler world of pine forests, dramatic waterfalls, limestone caves, living root bridges, and hill communities. Every route feels scenic, but the best trips leave room for weather and quiet discovery.',
+    hero: 'https://images.unsplash.com/photo-1518002054494-3a6f94352e9d?auto=format&fit=crop&w=1800&q=85',
+    places: [
+      { name: 'Shillong', detail: 'Enjoy the hill capital’s cafés, viewpoints, music culture, Ward’s Lake, and easy access to the surrounding countryside.', image: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1000&q=85' },
+      { name: 'Cherrapunji', detail: 'See misty valleys, waterfalls, caves, and monsoon-shaped landscapes around one of the world’s most famous rain-fed regions.', image: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=1000&q=85' },
+      { name: 'Dawki & Mawlynnong', detail: 'Combine the clear waters of the Umngot River with village walks, borderland scenery, and the famous living root bridge country.', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1000&q=85' },
+      { name: 'Nongriat', detail: 'For active travellers, the journey to the double-decker living root bridge is a memorable walk through deep green valleys.', image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1000&q=85' }
+    ],
+    notes: ['Best for waterfalls, forests, viewpoints, caves, and gentle adventure', 'Weather can change quickly, so flexible planning is valuable', 'A private cab makes the scenic routes and early starts much easier']
+  },
+  arunachal: {
+    title: 'Arunachal Pradesh',
+    kicker: 'High passes, monasteries, and wide-open valleys',
+    intro: 'Arunachal Pradesh is a journey for travellers who want altitude, silence, powerful mountain scenery, and living Himalayan cultures. Routes are longer and more regulated, which makes local planning especially important.',
+    hero: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=85',
+    places: [
+      { name: 'Tawang', detail: 'Visit one of the world’s great high-altitude monasteries and experience dramatic roads, mountain passes, and remote Himalayan views.', image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1000&q=85' },
+      { name: 'Dirang & Bomdila', detail: 'Slow down in mountain valleys with hot springs, monasteries, apple orchards, and a gentler introduction to the high country.', image: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1000&q=85' },
+      { name: 'Ziro Valley', detail: 'Explore a beautiful cultural landscape known for its distinctive villages, rice fields, music, and green valley views.', image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=85' },
+      { name: 'Itanagar & Eastern Routes', detail: 'Use the capital as a practical gateway and build a longer route around the landscapes and communities of eastern Arunachal.', image: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1000&q=85' }
+    ],
+    notes: ['Best for mountain landscapes, monasteries, valleys, and slow road journeys', 'Entry permits and route conditions should be checked before travel', 'Plan extra time for distance, weather, and mountain roads']
+  }
+};
+
+function DestinationPage({ destination }) {
+  return (
+    <main className="destination-page">
+      <header className="destination-hero" style={{ backgroundImage: `linear-gradient(90deg, rgba(16, 34, 53, 0.86), rgba(16, 34, 53, 0.3)), url(${destination.hero})` }}>
+        <div className="container destination-hero-content">
+          <a className="back-link light" href="/">← Back to AxomStay</a>
+          <div className="eyebrow">{destination.kicker}</div>
+          <h1>{destination.title}</h1>
+          <p>{destination.intro}</p>
+          <a className="cta-btn" href="/#contact">Plan this journey</a>
+        </div>
+      </header>
+      <section className="section destination-detail-intro">
+        <div className="container split-grid">
+          <div>
+            <div className="eyebrow dark">Travel guide</div>
+            <h2>Places to visit in {destination.title}</h2>
+          </div>
+          <div>
+            <p>AxomStay can help you choose the right route, number of nights, transport, and local experiences for your group. Browse the highlights below, then tell us what kind of trip you have in mind.</p>
+          </div>
+        </div>
+      </section>
+      <section className="section alt destination-places">
+        <div className="container">
+          <div className="destination-place-grid">
+            {destination.places.map((place, index) => (
+              <article className="destination-place" key={place.name}>
+                <img src={place.image} alt={`${place.name}, ${destination.title}`} />
+                <div className="destination-place-content">
+                  <span className="place-index">0{index + 1}</span>
+                  <h3>{place.name}</h3>
+                  <p>{place.detail}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section destination-notes">
+        <div className="container split-grid">
+          <div>
+            <div className="eyebrow dark">Plan with confidence</div>
+            <h2>What to know before you go</h2>
+          </div>
+          <ul>
+            {destination.notes.map((note) => <li key={note}>{note}</li>)}
+          </ul>
+        </div>
+      </section>
+      <section className="destination-cta">
+        <div className="container destination-cta-inner">
+          <div><div className="eyebrow">AxomStay local support</div><h2>Ready to explore {destination.title}?</h2></div>
+          <a className="cta-btn" href="/#contact">Request a tailored plan</a>
+        </div>
+      </section>
+    </main>
+  );
+}
 
 const stats = [
   { value: '2021', label: 'Local journey started' },
@@ -266,7 +371,7 @@ function App() {
                     <div className="eyebrow dark">{destination.eyebrow}</div>
                     <h3>{destination.name}</h3>
                     <p>{destination.text}</p>
-                    <a href="#contact">Plan this route →</a>
+                    <a href={`/${destination.slug}`}>Explore {destination.name} →</a>
                   </div>
                 </article>
               ))}
@@ -397,8 +502,11 @@ function App() {
   );
 }
 
+const pathDestination = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
+const page = destinationPages[pathDestination] ? <DestinationPage destination={destinationPages[pathDestination]} /> : <App />;
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    {page}
   </React.StrictMode>
 );
