@@ -55,12 +55,12 @@ const destinationPages = {
     title: 'Assam',
     kicker: 'The heart of your Northeast journey',
     intro: 'Assam is a land of mighty rivers, tea gardens, wildlife, ancient temples, island culture, and welcoming communities. It is the ideal place to begin a slower, richer journey through the Northeast.',
-    hero: '/images/assam/avinash-sharma-5noTAPYqDws-unsplash.jpg',
+    hero: '/images/assam/parichay-sen-f97bYKG7bmM-unsplash.jpg',
     places: [
       { name: 'Kaziranga National Park', detail: 'Spend time in one of India’s most celebrated wildlife landscapes, known for the one-horned rhinoceros, elephants, wetlands, and grasslands.', image: '/images/assam/santanu-misra-r9YOv6MoDM4-unsplash.jpg' },
       { name: 'Majuli Island', detail: 'Discover river island life, satras, mask-making traditions, music, and a peaceful cultural rhythm shaped by the Brahmaputra.', image: '/images/assam/navarun-baishya-Qxkqa8pj3eA-unsplash.jpg' },
       { name: 'Guwahati & Kamakhya', detail: 'Explore Assam’s gateway city, the Kamakhya Temple, the Brahmaputra riverfront, local markets, and the region’s food culture.', image: '/images/assam/nilotpal-kalita-POsw8VN4bnc-unsplash.jpg' },
-      { name: 'Sivasagar & Tea Country', detail: 'Follow the history of the Ahom kingdom and continue through green tea landscapes, heritage towns, and village roads.', image: '/images/assam/avinash-sharma-5noTAPYqDws-unsplash.jpg' }
+      { name: 'Sivasagar & Tea Country', detail: 'Follow the history of the Ahom kingdom and continue through green tea landscapes, heritage towns, and village roads.', image: '/images/assam/parichay-sen-f97bYKG7bmM-unsplash.jpg' }
     ],
     notes: ['Best for wildlife, culture, temples, tea gardens, and river experiences', 'Ideal starting point for travellers arriving through Guwahati', 'Comfortable routes can combine Guwahati, Kaziranga, and Sivasagar']
   },
@@ -160,14 +160,14 @@ const stats = [
 ];
 
 const gallery = [
-  '/images/assam/avinash-sharma-5noTAPYqDws-unsplash.jpg',
+  '/images/assam/parichay-sen-f97bYKG7bmM-unsplash.jpg',
   '/images/assam/santanu-misra-r9YOv6MoDM4-unsplash.jpg',
   '/images/meghalaya/sohan-rayguru-8pg0LoPoGEo-unsplash.jpg',
-  '/images/arunachal-pradesh/utkarsh-b-PNrVnDB1dPQ-unsplash.jpg'
+  '/images/arunachal-pradesh/kaushik-gogoi-Mw-s5Co4rOE-unsplash.jpg'
 ];
 
 const heroSlides = [
-  { image: '/images/assam/avinash-sharma-5noTAPYqDws-unsplash.jpg', label: 'Tea gardens and living culture', title: 'Breathe in Assam' },
+  { image: '/images/assam/parichay-sen-f97bYKG7bmM-unsplash.jpg', label: 'Tea gardens and living culture', title: 'Breathe in Assam' },
   { image: '/images/assam/santanu-misra-r9YOv6MoDM4-unsplash.jpg', label: 'Wildlife journeys in Kaziranga', title: 'Meet the wild heart of Assam' }
 ];
 

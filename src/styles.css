@@ -153,12 +153,41 @@ button {
 
 .hero {
   position: relative;
+  overflow: hidden;
   min-height: 700px;
   display: flex;
   align-items: center;
-  background: linear-gradient(90deg, rgba(15, 29, 42, 0.85) 0%, rgba(15, 29, 42, 0.45) 100%),
-    url('https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
   color: #fff;
+}
+
+.hero-slides,
+.hero-shade {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-slides {
+  background: var(--navy);
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: translateX(5%) scale(1.04);
+  transition: opacity 1000ms ease, transform 6500ms ease;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+.hero-shade {
+  background: linear-gradient(90deg, rgba(15, 29, 42, 0.86) 0%, rgba(15, 29, 42, 0.48) 100%);
 }
 
 .hero-content {
@@ -204,11 +233,36 @@ h2 {
   margin-bottom: 28px;
 }
 
+.hero-slide-title {
+  margin: -8px 0 16px;
+  color: #f3d29d;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 16px;
+}
+
+.hero-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 34px;
+}
+
+.hero-dots button {
+  width: 34px;
+  height: 4px;
+  padding: 0;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.hero-dots button.active {
+  background: var(--orange);
 }
 
 .card-strip {
@@ -545,6 +599,16 @@ h2 {
   height: 240px;
   object-fit: cover;
   border-radius: 18px;
+  animation: galleryDrift 8s ease-in-out infinite alternate;
+}
+
+.gallery-grid img:nth-child(2) { animation-delay: -2s; }
+.gallery-grid img:nth-child(3) { animation-delay: -4s; }
+.gallery-grid img:nth-child(4) { animation-delay: -6s; }
+
+@keyframes galleryDrift {
+  from { transform: translateY(0); }
+  to { transform: translateY(-8px); }
 }
 
 .contact-section {
@@ -880,7 +944,9 @@ h2 {
   }
 
   .destination-card,
-  .destination-image-wrap img {
+  .destination-image-wrap img,
+  .hero-slide,
+  .gallery-grid img {
     animation: none;
     transition: none;
   }
