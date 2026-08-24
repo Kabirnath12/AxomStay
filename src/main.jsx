@@ -26,6 +26,27 @@ const packages = [
 
 const destinations = ['Guwahati', 'Kaziranga', 'Majuli', 'Sivasagar', 'Haflong', 'Shillong'];
 
+const destinationShowcase = [
+  {
+    name: 'Meghalaya',
+    eyebrow: 'Waterfalls and living roots',
+    text: 'Plan a refreshing hill escape through Shillong, Cherrapunji, Dawki, and the beautiful landscapes of Meghalaya.',
+    image: 'https://images.unsplash.com/photo-1518002054494-3a6f94352e9d?auto=format&fit=crop&w=1200&q=85'
+  },
+  {
+    name: 'Kaziranga',
+    eyebrow: 'Wildlife and wetland country',
+    text: 'Experience Assam’s iconic national park with a practical route, comfortable cab transfers, and time for a memorable safari.',
+    image: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=1200&q=85'
+  },
+  {
+    name: 'Arunachal Pradesh',
+    eyebrow: 'High mountains and quiet valleys',
+    text: 'Travel towards Tawang, Dirang, Bomdila, or Ziro with a route planned around permits, weather, distance, and your pace.',
+    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=85'
+  }
+];
+
 const stats = [
   { value: '2021', label: 'Local journey started' },
   { value: '1 team', label: 'Plan, stay, travel' },
@@ -224,6 +245,32 @@ function App() {
                 <div className="stat-label">{item.label}</div>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className="section destination-showcase" id="destinations">
+          <div className="container">
+            <div className="section-head">
+              <div className="eyebrow dark">Signature destinations</div>
+              <h2>Start in Assam, then follow the landscape wherever your curiosity leads.</h2>
+              <p>We can help you combine wildlife, hills, culture, and countryside into one comfortable Northeast journey.</p>
+            </div>
+            <div className="destination-cards">
+              {destinationShowcase.map((destination, index) => (
+                <article className="destination-card" style={{ '--card-delay': `${index * 180}ms` }} key={destination.name}>
+                  <div className="destination-image-wrap">
+                    <img src={destination.image} alt={`${destination.name} travel experience`} />
+                    <span className="destination-number">0{index + 1}</span>
+                  </div>
+                  <div className="destination-card-body">
+                    <div className="eyebrow dark">{destination.eyebrow}</div>
+                    <h3>{destination.name}</h3>
+                    <p>{destination.text}</p>
+                    <a href="#contact">Plan this route →</a>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
