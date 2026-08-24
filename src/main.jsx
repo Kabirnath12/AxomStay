@@ -166,6 +166,12 @@ const gallery = [
   '/images/arunachal-pradesh/kaushik-gogoi-Mw-s5Co4rOE-unsplash.jpg'
 ];
 
+const farmGallery = [
+  { image: '/images/assam/navarun-baishya-Qxkqa8pj3eA-unsplash.jpg', label: 'Open skies and slow mornings' },
+  { image: '/images/assam/nilotpal-kalita-POsw8VN4bnc-unsplash.jpg', label: 'Local culture close to home' },
+  { image: '/images/assam/suchitra-shots-RNbcPyH7Tp0-unsplash.jpg', label: 'A peaceful base for Assam' }
+];
+
 const heroSlides = [
   { image: '/images/assam/parichay-sen-f97bYKG7bmM-unsplash.jpg', label: 'Tea gardens and living culture', title: 'Breathe in Assam' },
   { image: '/images/assam/santanu-misra-r9YOv6MoDM4-unsplash.jpg', label: 'Wildlife journeys in Kaziranga', title: 'Meet the wild heart of Assam' }
@@ -458,8 +464,11 @@ function App() {
               <a className="primary-btn" href="#contact">Ask about a farm stay</a>
             </div>
             <div className="image-panel">
-              <img src="https://images.unsplash.com/photo-1507560461415-997cd00bfd45?auto=format&fit=crop&w=1000&q=80" alt="Green countryside near New Horizon Farm" />
+              <img src="/images/assam/parichay-sen-kjTrWNAMm4c-unsplash.jpg" alt="Green landscape near New Horizon Farm" />
             </div>
+          </div>
+          <div className="container farm-gallery">
+            {farmGallery.map((item) => <figure key={item.image}><img src={item.image} alt={item.label} /><figcaption>{item.label}</figcaption></figure>)}
           </div>
         </section>
 
